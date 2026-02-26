@@ -1,0 +1,5 @@
+# config/config.yaml
+base_url: "https://www.saucedemo.com"
+browser: "edge"  # chrome / firefox / edge
+headless: false    # true: 无界面运行, false: 显示浏览器
+timeout: 10        # 元素等待超时时间(秒)

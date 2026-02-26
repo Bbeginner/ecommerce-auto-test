@@ -1,0 +1,114 @@
+2026-02-25 19:40:51,256 - INFO - 打开登录页面
+2026-02-25 19:40:51,291 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:40:51,508 - DEBUG - 向 ('id', 'user-name') 输入: standard_user
+2026-02-25 19:40:51,526 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:40:51,660 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:40:51,684 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:40:51,872 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:40:51,872 - INFO - 尝试登录: standard_user
+2026-02-25 19:41:02,459 - INFO - 打开登录页面
+2026-02-25 19:41:02,479 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:41:02,660 - DEBUG - 向 ('id', 'user-name') 输入: performance_glitch_user
+2026-02-25 19:41:02,677 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:41:02,798 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:41:02,815 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:41:07,973 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:41:07,973 - INFO - 尝试登录: performance_glitch_user
+2026-02-25 19:41:20,127 - INFO - 打开登录页面
+2026-02-25 19:41:20,148 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:41:20,306 - DEBUG - 向 ('id', 'user-name') 输入: problem_user
+2026-02-25 19:41:20,321 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:41:20,447 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:41:20,464 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:41:20,612 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:41:20,612 - INFO - 尝试登录: problem_user
+2026-02-25 19:41:31,731 - INFO - 打开登录页面
+2026-02-25 19:41:31,754 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:41:31,915 - DEBUG - 向 ('id', 'user-name') 输入: locked_out_user
+2026-02-25 19:41:31,928 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:41:32,056 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:41:32,070 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:41:32,175 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:41:32,175 - INFO - 尝试登录: locked_out_user
+2026-02-25 19:41:32,232 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:41:32,252 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Sorry, this user has been locked out.
+2026-02-25 19:41:44,224 - INFO - 打开登录页面
+2026-02-25 19:41:44,244 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:41:44,397 - DEBUG - 向 ('id', 'user-name') 输入: fake_user
+2026-02-25 19:41:44,415 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:41:44,530 - DEBUG - 向 ('id', 'password') 输入: wrong_pwd
+2026-02-25 19:41:44,549 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:41:44,649 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:41:44,649 - INFO - 尝试登录: fake_user
+2026-02-25 19:41:44,701 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:41:44,716 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username and password do not match any user in this service
+2026-02-25 19:41:56,864 - INFO - 打开登录页面
+2026-02-25 19:41:56,886 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:41:57,008 - DEBUG - 向 ('id', 'user-name') 输入: 
+2026-02-25 19:41:57,024 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:41:57,174 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:41:57,195 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:41:57,292 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:41:57,292 - INFO - 尝试登录: 
+2026-02-25 19:41:57,342 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:41:57,367 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username is required
+2026-02-25 19:42:09,635 - INFO - 打开登录页面
+2026-02-25 19:42:09,655 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:42:09,818 - DEBUG - 向 ('id', 'user-name') 输入: standard_user
+2026-02-25 19:42:09,835 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:42:09,924 - DEBUG - 向 ('id', 'password') 输入: 
+2026-02-25 19:42:09,938 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:42:10,032 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:42:10,032 - INFO - 尝试登录: standard_user
+2026-02-25 19:42:10,082 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:42:10,101 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Password is required
+2026-02-25 19:42:21,173 - INFO - 打开登录页面
+2026-02-25 19:42:21,194 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:42:21,309 - DEBUG - 向 ('id', 'user-name') 输入: 
+2026-02-25 19:42:21,324 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:42:21,415 - DEBUG - 向 ('id', 'password') 输入: 
+2026-02-25 19:42:21,430 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:42:21,527 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:42:21,527 - INFO - 尝试登录: 
+2026-02-25 19:42:21,579 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:42:21,596 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username is required
+2026-02-25 19:42:33,194 - INFO - 打开登录页面
+2026-02-25 19:42:33,215 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:42:33,371 - DEBUG - 向 ('id', 'user-name') 输入: Standard_User
+2026-02-25 19:42:33,390 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:42:33,508 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:42:33,524 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:42:33,624 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:42:33,624 - INFO - 尝试登录: Standard_User
+2026-02-25 19:42:33,671 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:42:33,687 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username and password do not match any user in this service
+2026-02-25 19:42:44,164 - INFO - 打开登录页面
+2026-02-25 19:42:44,191 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:42:44,358 - DEBUG - 向 ('id', 'user-name') 输入: standard_user
+2026-02-25 19:42:44,377 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:42:44,503 - DEBUG - 向 ('id', 'password') 输入: Secret_Sauce
+2026-02-25 19:42:44,521 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:42:44,626 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:42:44,626 - INFO - 尝试登录: standard_user
+2026-02-25 19:42:44,675 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:42:44,691 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username and password do not match any user in this service
+2026-02-25 19:42:58,341 - INFO - 打开登录页面
+2026-02-25 19:42:58,365 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:42:58,536 - DEBUG - 向 ('id', 'user-name') 输入:  standard_user 
+2026-02-25 19:42:58,556 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:42:58,687 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 19:42:58,701 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:42:58,801 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:42:58,801 - INFO - 尝试登录:  standard_user 
+2026-02-25 19:42:58,852 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:42:58,870 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username and password do not match any user in this service
+2026-02-25 19:43:10,959 - INFO - 打开登录页面
+2026-02-25 19:43:10,979 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 19:43:11,134 - DEBUG - 向 ('id', 'user-name') 输入: ' OR 1=1--
+2026-02-25 19:43:11,150 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 19:43:11,258 - DEBUG - 向 ('id', 'password') 输入: any
+2026-02-25 19:43:11,272 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 19:43:11,372 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 19:43:11,373 - INFO - 尝试登录: ' OR 1=1--
+2026-02-25 19:43:11,422 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 19:43:11,442 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username and password do not match any user in this service

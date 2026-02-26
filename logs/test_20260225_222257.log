@@ -1,0 +1,10 @@
+2026-02-25 22:22:58,599 - INFO - 打开登录页面
+2026-02-25 22:23:02,479 - DEBUG - 找到元素: ('id', 'user-name')
+2026-02-25 22:23:02,612 - DEBUG - 向 ('id', 'user-name') 输入: 
+2026-02-25 22:23:02,626 - DEBUG - 找到元素: ('id', 'password')
+2026-02-25 22:23:02,762 - DEBUG - 向 ('id', 'password') 输入: secret_sauce
+2026-02-25 22:23:02,777 - DEBUG - 找到元素: ('id', 'login-button')
+2026-02-25 22:23:02,887 - DEBUG - 点击元素: ('id', 'login-button')
+2026-02-25 22:23:02,887 - INFO - 尝试登录: 
+2026-02-25 22:23:02,952 - DEBUG - 找到元素: ('css selector', "h3[data-test='error']")
+2026-02-25 22:23:02,972 - DEBUG - 获取文本 ('css selector', "h3[data-test='error']"): Epic sadface: Username is required
