@@ -263,11 +263,13 @@ ecommerce-auto-test/
 <p align="center">
   Allure Overview
 </p>
+
 ![image-20260226192516487](assets/allure2.png)
 
 <p align="center">
   Failed Test
 </p>
+
 ![image-20260226192503801](assets/allure3.png)
 
 <p align="center">
