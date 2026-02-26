@@ -258,29 +258,29 @@ ecommerce-auto-test/
 
 ### Allure 报告示例
 
-![image-20260226192139290](C:\Users\Linux\Desktop\DEAR\gupn\ecommerce-auto-test\screenshots\allure1.png)
+![image-20260226192139290](assets/allure1.png)
 
 <p align="center">
   Allure Overview
 </p>
-![image-20260226192516487](C:\Users\Linux\Desktop\DEAR\gupn\ecommerce-auto-test\screenshots\allure2.png)
+![image-20260226192516487](assets/allure2.png)
 
 <p align="center">
   Failed Test
 </p>
-![image-20260226192503801](C:\Users\Linux\Desktop\DEAR\gupn\ecommerce-auto-test\screenshots\allure3.png)
+![image-20260226192503801](assets/allure3.png)
 
 <p align="center">
   Suites
 </p>
 
-![image-20260226192801024](C:\Users\Linux\Desktop\DEAR\gupn\ecommerce-auto-test\screenshots\allure4.png)
+![image-20260226192801024](assets/allure4.png)
 
 <p align="center">
   Behaviors
 </p>
 
-![image-20260226192919480](C:\Users\Linux\Desktop\DEAR\gupn\ecommerce-auto-test\screenshots\allure5.png)
+![image-20260226192919480](assets/allure5.png)
 
 <p align="center">
   Packages
