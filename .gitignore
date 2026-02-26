@@ -10,6 +10,7 @@ __pycache__/
 
 # 报告和截图
 reports/
+screenshots/
 allure-results/
 allure-report/
 logs/
