@@ -35,7 +35,8 @@ jobs:
         run: echo "CHROMEDRIVER_PATH=/usr/lib/chromium-browser/chromedriver" >> $GITHUB_ENV
 
       - name: Override browser to chrome in config.yaml
-        run: sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
+        run: |
+          sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
 
       - name: Run tests (headless mode)
         run: |
