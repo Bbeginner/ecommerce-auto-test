@@ -34,13 +34,14 @@ jobs:
       - name: Setup Chromedriver
         uses: browser-actions/setup-chromedriver@v1
         with:
-          chromedriver-version: '114.0.5735.90'  # 可根据需要调整版本
+          chromedriver-version: '114.0.5735.90'  # 根据你的 Chrome 版本调整
 
       - name: Set Chromedriver path
         run: echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
 
       - name: Override browser to chrome in config.yaml
-        run: sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
+        run: |
+          sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
 
       - name: Run tests (headless mode)
         run: |
