@@ -1,0 +1,61 @@
+name: Run Automation Tests
+
+on:
+  push:
+    branches: [ main, master ]   # 触发分支
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest        # 使用 Ubuntu 环境
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'   # 你的 Python 版本
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Override browser to chrome in config.yaml
+        run: |
+          sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
+
+      - name: Run tests (headless mode)
+        run: |
+          pytest tests/test_login.py -v --alluredir=./allure-results
+
+      - name: Upload Allure results as artifact
+        uses: actions/upload-artifact@v4
+        if: always()                 # 即使测试失败也上传
+        with:
+          name: allure-results
+          path: allure-results/
+
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          gh_pages: gh-pages          # 可选，下面会用到
+
+      - name: Deploy Allure report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          publish_branch: gh-pages     # 推送到 gh-pages 分支
