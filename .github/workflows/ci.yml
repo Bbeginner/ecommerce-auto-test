@@ -2,13 +2,15 @@ name: Run Automation Tests
 
 on:
   push:
-    branches: [ main, master ]   # 触发分支
+    branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
 
 jobs:
   test:
-    runs-on: ubuntu-latest        # 使用 Ubuntu 环境
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 允许 GitHub Pages 部署
 
     steps:
       - name: Checkout code
@@ -17,26 +19,23 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'   # 你的 Python 版本
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-        with:
-          chrome-version: stable
+      - name: Install Chrome and Chromedriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
 
-      - name: Setup Chromedriver
-        uses: browser-actions/setup-chromedriver@v1
-        with:
-          chromedriver-version: '114.0.5735.90' # 可以根据 Chrome 版本调整
+      - name: Set Chromedriver path
+        run: echo "CHROMEDRIVER_PATH=/usr/lib/chromium-browser/chromedriver" >> $GITHUB_ENV
 
       - name: Override browser to chrome in config.yaml
-        run: |
-          sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
+        run: sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
 
       - name: Run tests (headless mode)
         run: |
@@ -44,7 +43,7 @@ jobs:
 
       - name: Upload Allure results as artifact
         uses: actions/upload-artifact@v4
-        if: always()                 # 即使测试失败也上传
+        if: always()
         with:
           name: allure-results
           path: allure-results/
@@ -55,7 +54,7 @@ jobs:
         with:
           allure_results: allure-results
           allure_report: allure-report
-          gh_pages: gh-pages          # 可选，下面会用到
+          gh_pages: gh-pages
 
       - name: Deploy Allure report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -63,4 +62,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
-          publish_branch: gh-pages     # 推送到 gh-pages 分支
+          publish_branch: gh-pages
