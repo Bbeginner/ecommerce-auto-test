@@ -22,11 +22,11 @@ class DriverFactory:
             if headless:
                 options.add_argument('--headless')
             # 检查环境变量 CHROMEDRIVER_PATH
-            chromedriver_path = os.environ.get('CHROMEDRIVER_PATH')
-            if chromedriver_path:
-                service = ChromeService(executable_path=chromedriver_path)
-                driver = webdriver.Chrome(service=service, options=options)
-            else:
+            # chromedriver_path = os.environ.get('CHROMEDRIVER_PATH')
+            # if chromedriver_path:
+            #     service = ChromeService(executable_path=chromedriver_path)
+            #     driver = webdriver.Chrome(service=service, options=options)
+            # else:
                 service = ChromeService(ChromeDriverManager().install())
                 driver = webdriver.Chrome(service=service, options=options)
 

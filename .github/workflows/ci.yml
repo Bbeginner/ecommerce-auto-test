@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # 允许 GitHub Pages 部署
+      contents: write
 
     steps:
       - name: Checkout code
@@ -21,18 +21,33 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Chrome and Chromedriver
+      - name: Cache webdriver-manager
+        uses: actions/cache@v4
+        with:
+          path: ~/.wdm
+          key: ${{ runner.os }}-wdm-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-wdm-
+
+      # 不再需要 apt 安装 chromium，因为 webdriver-manager 会下载匹配的驱动
+      # 但需要确保系统有 Chrome 浏览器本身
+      - name: Install Chrome browser
         run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser chromium-chromedriver
-
-      - name: Set Chromedriver path
-        run: echo "CHROMEDRIVER_PATH=/usr/lib/chromium-browser/chromedriver" >> $GITHUB_ENV
+          sudo apt-get install -y google-chrome-stable
 
       - name: Override browser to chrome in config.yaml
         run: |
