@@ -1,5 +1,6 @@
 import pytest
 import allure
+import time
 from pages.login_page import LoginPage
 
 @allure.feature("登录功能")
@@ -9,6 +10,13 @@ class TestLogin:
         self.driver.delete_all_cookies()
         login_page = LoginPage(self.driver)
         login_page.open()  # open 已包含等待
+         # 额外等待，确保元素可交互
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        from selenium.webdriver.common.by import By
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "user-name"))
+        )
 
     @allure.story("登录场景参数化")
     @allure.title("测试登录场景：{username} / {password}")
@@ -19,15 +27,19 @@ class TestLogin:
         ("fake_user", "wrong_pwd", "invalid"),
         ("performance_glitch_user", "secret_sauce", "success"),
         ("problem_user", "secret_sauce", "success"),
-        ("standard_user", "secret_sauce", "success"),   # 故意传参错误的用例放最后
+        ("standard_user", "secret_sauce", "success"),  # 故意传参错误的用例放最后
     ])
     def test_login_scenarios(self, username, password, expected_status):
         with allure.step("打开登录页面"):
             login_page = LoginPage(self.driver)
-            login_page.open()
+            # login_page.open()
         with allure.step(f"输入用户名：{username}，密码：{password}"):
             login_page.login(username, password)
 
+        # 针对 performance_glitch_user 增加等待
+        if username == "performance_glitch_user":
+            time.sleep(5)  # 可以先用简单等待，后续可优化为显式等待
+            
         with allure.step("验证登录结果"):
             if expected_status == "success":
                 # 先尝试正常登录（因为本地可以，但 CI 可能失败）
