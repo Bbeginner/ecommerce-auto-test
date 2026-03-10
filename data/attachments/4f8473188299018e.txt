@@ -1,9 +1,0 @@
-INFO     AutoTest:login_page.py:17 打开登录页面
-DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'user-name')
-DEBUG    AutoTest:base_page.py:32 向 ('id', 'user-name') 输入: standard_user
-DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'password')
-DEBUG    AutoTest:base_page.py:32 向 ('id', 'password') 输入: 
-DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'login-button')
-DEBUG    AutoTest:base_page.py:26 点击元素: ('id', 'login-button')
-INFO     AutoTest:login_page.py:27 尝试登录: standard_user
-INFO     AutoTest:login_page.py:76 错误消息: Epic sadface: Password is required
