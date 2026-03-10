@@ -37,14 +37,14 @@ class DriverFactory:
             log_path = "./chromedriver.log"
 
             if chromedriver_path and os.path.exists(chromedriver_path):
-                service = ChromeService(os.environ.get('CHROMEDRIVER_PATH', '/usr/local/bin/chromedriver'))
+                # 使用系统安装的 chromedriver，并启用日志
+                service = ChromeService(
+                    executable_path=chromedriver_path,
+                    service_args=['--verbose', f'--log-path={log_path}']
+                )
                 driver = webdriver.Chrome(service=service, options=options)
-                # service = ChromeService(
-                #     executable_path=chromedriver_path,
-                #     service_args=['--verbose', f'--log-path={log_path}']
-                # )
-                # driver = webdriver.Chrome(service=service, options=options)
             else:
+                # 回退到 webdriver-manager 自动下载
                 try:
                     service = ChromeService(
                         ChromeDriverManager().install(),
@@ -53,7 +53,7 @@ class DriverFactory:
                     driver = webdriver.Chrome(service=service, options=options)
                 except Exception as e:
                     raise Exception(f"Failed to initialize Chrome driver: {e}")
-
+                
         # ---------- Firefox ----------
         elif browser == 'firefox':
             options = webdriver.FirefoxOptions()

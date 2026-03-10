@@ -34,59 +34,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # - name: Cache webdriver-manager
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ~/.wdm
-      #     key: ${{ runner.os }}-wdm-${{ hashFiles('requirements.txt') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-wdm-
+      # 使用 browser-actions/setup-chrome 安装 Chrome 和 chromedriver（最稳定）
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
 
-      # 不再需要 apt 安装 chromium，因为 webdriver-manager 会下载匹配的驱动
-      # 但需要确保系统有 Chrome 浏览器本身
-      # - name: Install Chrome browser
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y google-chrome-stable
-      #     google-chrome --version   # 打印 Chrome 版本
-
-      # - name: Test Chrome headless launch
-      #   run: |
-      #     google-chrome --headless --no-sandbox --disable-dev-shm-usage --dump-dom https://example.com || echo "Chrome launch failed, but continuing..."
-          
-      # 安装 Chromium 和 chromedriver（系统包）
-      # - name: Install Chromium and chromedriver
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y chromium-browser chromium-chromedriver
-      #     chromium-browser --version
-      #     chromedriver --version
-      #     echo "CHROMEDRIVER_PATH=/usr/lib/chromium-browser/chromedriver" >> $GITHUB_ENV
-
-      - name: Install Google Chrome
+      # 验证安装并设置环境变量
+      - name: Verify Chrome and chromedriver
         run: |
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
           google-chrome --version
-      - name: Confirm Google Chrome install
-        run: |
-          if ! google-chrome --version; then
-            echo "Google Chrome failed to install"
-            exit 1
-          fi
-
-      - name: Install ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | sed 's/Google Chrome //;s/ .*//')
-          CHROMEDRIVER_VERSION=$(wget -qO- "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-          unzip /tmp/chromedriver.zip -d /tmp
-          sudo mv /tmp/chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
           chromedriver --version
-          echo "CHROMEDRIVER_PATH=/usr/local/bin/chromedriver" >> $GITHUB_ENV
+          echo "CHROME_BIN=$(which google-chrome)" >> $GITHUB_ENV
+          echo "CHROMEDRIVER_PATH=$(which chromedriver)" >> $GITHUB_ENV
 
       - name: Override browser to chrome in config.yaml
         run: |
@@ -112,13 +72,6 @@ jobs:
       - name: Run tests (headless mode)
         run: |
           pytest tests/test_login.py -v --alluredir=./allure-results
-
-      - name: Upload chromedriver log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: chromedriver-log
-          path: chromedriver.log
 
       - name: Upload Allure results as artifact
         uses: actions/upload-artifact@v4
