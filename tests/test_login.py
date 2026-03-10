@@ -15,11 +15,11 @@ class TestLogin:
     @pytest.mark.parametrize("username,password,expected_status", [
         ("", "secret_sauce", "empty_username"),
         ("standard_user", "", "empty_password"),
-        ("standard_user", "secret_sauce", "success"),
-        ("performance_glitch_user", "secret_sauce", "success"),
-        ("problem_user", "secret_sauce", "success"),
         ("locked_out_user", "secret_sauce", "locked"),
         ("fake_user", "wrong_pwd", "invalid"),
+        ("performance_glitch_user", "secret_sauce", "success"),
+        ("problem_user", "secret_sauce", "success"),
+        ("standard_user", "secret_sauce", "success"),   # 故意传参错误的用例放最后
     ])
     def test_login_scenarios(self, username, password, expected_status):
         with allure.step("打开登录页面"):
