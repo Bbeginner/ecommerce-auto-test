@@ -36,9 +36,7 @@ class TestLogin:
         with allure.step(f"输入用户名：{username}，密码：{password}"):
             login_page.login(username, password)
             
-        with allure.step("验证登录结果"):
-            if expected_status == "success":
-                # # 先尝试正常登录（因为本地可以，但 CI 可能失败）
+            # # 先尝试正常登录（因为本地可以，但 CI 可能失败）
                 # login_page.login(username, password)
                 # time.sleep(3)  # 等待页面响应
                 # if not login_page.wait_for_inventory_page(timeout=5):
@@ -46,6 +44,8 @@ class TestLogin:
                 #     self.logger.warning(f"正常登录失败，尝试 JS 登录: {username}")
                 #     login_page.login_by_js(username, password)
                 # # 等待商品列表页出现
+        with allure.step("验证登录结果"):
+            if expected_status == "success":
                 assert login_page.wait_for_inventory_page(timeout=20) is True, \
                     f"登录后未进入商品列表页，当前 URL: {login_page.driver.current_url}"
             elif expected_status == "locked":

@@ -21,11 +21,12 @@ class LoginPage(BasePage):
         )
 
     def login(self, username, password):
+        time.sleep(4)
         self.input_text(self._username_input, username)
         self.input_text(self._password_input, password)
         self.click(self._login_button)
         self.logger.info(f"尝试登录: {username}")
-        
+
     # def login(self, username, password, retry=True):
     #     """执行登录操作，增加兜底重试机制"""
     #     self.input_text(self._username_input, username)
