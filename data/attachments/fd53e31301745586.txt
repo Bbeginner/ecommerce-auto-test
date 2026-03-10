@@ -1,2 +1,0 @@
-INFO: 打开登录页面
-INFO: 尝试登录: problem_user
