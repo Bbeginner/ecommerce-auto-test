@@ -25,10 +25,10 @@ class TestLogin:
         ("standard_user", "", "empty_password"),
         ("locked_out_user", "secret_sauce", "locked"),
         ("fake_user", "wrong_pwd", "invalid"),
-        #pytest.param("performance_glitch_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
+        # pytest.param("performance_glitch_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
         ("problem_user", "secret_sauce", "success"),
         #  pytest.param("problem_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
-        #("standard_user", "secret_sauce", "success"),  # 故意传参错误的用例放最后
+        # ("standard_user", "secret_sauce", "success"),  # 故意传参错误的用例放最后
     ])
     def test_login_scenarios(self, username, password, expected_status):
         with allure.step("打开登录页面"):
