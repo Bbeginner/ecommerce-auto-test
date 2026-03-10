@@ -1,8 +1,0 @@
-INFO     AutoTest:login_page.py:13 打开登录页面
-DEBUG    AutoTest:base_page.py:16 找到元素: ('id', 'user-name')
-DEBUG    AutoTest:base_page.py:31 向 ('id', 'user-name') 输入: problem_user
-DEBUG    AutoTest:base_page.py:16 找到元素: ('id', 'password')
-DEBUG    AutoTest:base_page.py:31 向 ('id', 'password') 输入: secret_sauce
-DEBUG    AutoTest:base_page.py:16 找到元素: ('id', 'login-button')
-DEBUG    AutoTest:base_page.py:25 点击元素: ('id', 'login-button')
-INFO     AutoTest:login_page.py:19 尝试登录: problem_user
