@@ -20,13 +20,29 @@ class LoginPage(BasePage):
             EC.visibility_of_element_located(self._username_input)
         )
 
-    def login(self, username, password):
+    def login(self, username, password, retry=True):
+        """执行登录操作，增加兜底重试机制"""
         self.input_text(self._username_input, username)
         self.input_text(self._password_input, password)
         self.click(self._login_button)
         self.logger.info(f"尝试登录: {username}")
-        # 登录后强制等待一段时间，让页面跳转完成（尤其对 performance_glitch_user 有用）
-        time.sleep(2)  # 简单粗暴，但有效
+        
+        # 短暂等待，让页面响应，尤其对 performance_glitch_user 有用
+        time.sleep(2) # 简单粗暴，但有效
+        
+        # 兜底逻辑：如果 URL 没变（还在登录页）且没有错误消息，说明登录操作可能没触发
+        current_url = self.driver.current_url
+        error_element_exists = self.is_element_visible(self._error_message, timeout=2)
+        
+        if "inventory.html" not in current_url and not error_element_exists and retry:
+            self.logger.warning("登录后页面无变化，尝试刷新并重试一次")
+            self.driver.refresh()
+            time.sleep(2)
+            # 重新尝试登录（不再重试，避免死循环）
+            self.input_text(self._username_input, username)
+            self.input_text(self._password_input, password)
+            self.click(self._login_button)
+            time.sleep(2)
 
     def get_error_message(self, timeout=10):
         """获取错误消息，带显式等待"""
