@@ -37,7 +37,7 @@ class DriverFactory:
             log_path = "./chromedriver.log"
 
             if chromedriver_path and os.path.exists(chromedriver_path):
-                service = Service(os.environ.get('CHROMEDRIVER_PATH', '/usr/local/bin/chromedriver'))
+                service = ChromeService(os.environ.get('CHROMEDRIVER_PATH', '/usr/local/bin/chromedriver'))
                 driver = webdriver.Chrome(service=service, options=options)
                 # service = ChromeService(
                 #     executable_path=chromedriver_path,
