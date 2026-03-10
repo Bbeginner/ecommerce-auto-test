@@ -25,7 +25,7 @@ class TestLogin:
         ("standard_user", "", "empty_password"),
         ("locked_out_user", "secret_sauce", "locked"),
         ("fake_user", "wrong_pwd", "invalid"),
-        pytest.param("performance_glitch_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
+        #pytest.param("performance_glitch_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
         ("problem_user", "secret_sauce", "success"),
         #  pytest.param("problem_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
         ("standard_user", "secret_sauce", "success"),  # 故意传参错误的用例放最后
@@ -69,7 +69,7 @@ class TestLogin:
                 error = login_page.get_error_message(timeout=10)
                 assert error is not None, "无效凭证应显示错误消息"
                 assert "do not match" in error.lower() or "username and password do not match" in error.lower()
-        
+
     # 独立测试方法也做同样修改，但因为我们已经在参数化中覆盖，可以保留或删除。为简洁，可删除独立方法，但为了保险保留并修改
     @allure.story("空用户名")
     def test_empty_username(self):
@@ -130,3 +130,27 @@ class TestLogin:
         error = login_page.get_error_message(timeout=10)
         assert error is not None, "SQL注入应被拒绝并显示错误消息"
         assert "do not match" in error.lower()
+
+    @allure.feature("登录功能-特殊用户")
+    class TestProblematicUsers:
+        def setup_method(self):
+            self.driver = self.__class__.driver
+            self.driver.delete_all_cookies()
+            self.driver.execute_script("window.localStorage.clear();")
+            self.driver.execute_script("window.sessionStorage.clear();")
+            self.driver.get("https://www.saucedemo.com")
+            from selenium.webdriver.support.ui import WebDriverWait
+            from selenium.webdriver.support import expected_conditions as EC
+            from selenium.webdriver.common.by import By
+            WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "user-name"))
+        )
+
+    @allure.story("慢速用户测试")
+    def test_performance_glitch_user(self):
+        username = "performance_glitch_user"
+        password = "secret_sauce"
+        login_page = LoginPage(self.driver)
+        login_page.login(username, password)
+        assert login_page.wait_for_inventory_page(timeout=30) is True, \
+            f"登录后未进入商品列表页，当前 URL: {login_page.driver.current_url}"
