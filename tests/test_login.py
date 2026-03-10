@@ -5,9 +5,9 @@ from pages.login_page import LoginPage
 @allure.feature("登录功能")
 class TestLogin:
     def setup_method(self):
-        """每个测试方法执行前运行，清理浏览器状态"""
+        self.driver = self.__class__.driver
         self.driver.delete_all_cookies()
-        self.driver.get("https://www.saucedemo.com")  # 强制跳转回登录页
+        self.driver.get("https://www.saucedemo.com")  # 强制回到登录页
         self.driver.refresh()
         import time
         time.sleep(1)
@@ -29,26 +29,38 @@ class TestLogin:
             login_page.open()
         with allure.step(f"输入用户名：{username}，密码：{password}"):
             login_page.login(username, password)
+
+        # 针对 performance_glitch_user 增加额外等待
+        if username == "performance_glitch_user":
+            import time
+            time.sleep(5)  # 等待慢速登录完成
+
         with allure.step("验证登录结果"):
             if expected_status == "success":
+                # 可进一步等待 inventory 页面元素
                 assert login_page.is_login_success() is True
             elif expected_status == "locked":
                 assert login_page.is_login_success() is False
                 error = login_page.get_error_message()
+                assert error is not None, "锁定用户应显示错误消息"
                 assert "locked out" in error.lower()
             elif expected_status == "empty_username":
                 assert login_page.is_login_success() is False
-                error = login_page.get_error_message().lower()
-                assert "username is required" in error
+                error = login_page.get_error_message()
+                assert error is not None, "空用户名应显示错误消息"
+                assert "username is required" in error.lower()
             elif expected_status == "empty_password":
                 assert login_page.is_login_success() is False
-                error = login_page.get_error_message().lower()
-                assert "password is required" in error
+                error = login_page.get_error_message()
+                assert error is not None, "空密码应显示错误消息"
+                assert "password is required" in error.lower()
             else:  # invalid
                 assert login_page.is_login_success() is False
-                error = login_page.get_error_message().lower()
-                assert "do not match" in error or "username and password do not match" in error
+                error = login_page.get_error_message()
+                assert error is not None, "无效凭证应显示错误消息"
+                assert "do not match" in error.lower() or "username and password do not match" in error.lower()
 
+    # 以下为原有的独立测试方法，也需按相同模式修改
     @allure.story("空用户名")
     def test_empty_username(self):
         with allure.step("打开登录页面"):
@@ -58,8 +70,9 @@ class TestLogin:
             login_page.login("", "secret_sauce")
         with allure.step("验证错误提示"):
             assert login_page.is_login_success() is False
-            error = login_page.get_error_message().lower()
-            assert "username is required" in error
+            error = login_page.get_error_message()
+            assert error is not None, "空用户名应显示错误消息"
+            assert "username is required" in error.lower()
 
     @allure.story("空密码")
     def test_empty_password(self):
@@ -70,8 +83,9 @@ class TestLogin:
             login_page.login("standard_user", "")
         with allure.step("验证错误提示"):
             assert login_page.is_login_success() is False
-            error = login_page.get_error_message().lower()
-            assert "password is required" in error
+            error = login_page.get_error_message()
+            assert error is not None, "空密码应显示错误消息"
+            assert "password is required" in error.lower()
 
     @allure.story("用户名大小写敏感")
     def test_username_case_sensitive(self):
@@ -82,8 +96,9 @@ class TestLogin:
             login_page.login("Standard_User", "secret_sauce")
         with allure.step("验证登录失败"):
             assert login_page.is_login_success() is False
-            error = login_page.get_error_message().lower()
-            assert "do not match" in error
+            error = login_page.get_error_message()
+            assert error is not None, "大小写错误应显示错误消息"
+            assert "do not match" in error.lower()
 
     @allure.story("密码大小写敏感")
     def test_password_case_sensitive(self):
@@ -94,8 +109,9 @@ class TestLogin:
             login_page.login("standard_user", "Secret_Sauce")
         with allure.step("验证登录失败"):
             assert login_page.is_login_success() is False
-            error = login_page.get_error_message().lower()
-            assert "do not match" in error
+            error = login_page.get_error_message()
+            assert error is not None, "大小写错误应显示错误消息"
+            assert "do not match" in error.lower()
 
     @allure.story("用户名含前后空格")
     def test_username_with_spaces(self):
@@ -106,8 +122,9 @@ class TestLogin:
             login_page.login(" standard_user ", "secret_sauce")
         with allure.step("验证登录失败"):
             assert login_page.is_login_success() is False
-            error = login_page.get_error_message().lower()
-            assert "do not match" in error
+            error = login_page.get_error_message()
+            assert error is not None, "含空格用户名应显示错误消息"
+            assert "do not match" in error.lower()
 
     @allure.story("SQL注入尝试")
     def test_sql_injection(self):
@@ -118,5 +135,6 @@ class TestLogin:
             login_page.login("' OR 1=1--", "any")
         with allure.step("验证登录失败"):
             assert login_page.is_login_success() is False
-            error = login_page.get_error_message().lower()
-            assert "do not match" in error
+            error = login_page.get_error_message()
+            assert error is not None, "SQL注入应被拒绝并显示错误消息"
+            assert "do not match" in error.lower()
