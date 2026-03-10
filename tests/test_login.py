@@ -35,21 +35,17 @@ class TestLogin:
             # login_page.open()
         with allure.step(f"输入用户名：{username}，密码：{password}"):
             login_page.login(username, password)
-
-        # 针对 performance_glitch_user 增加等待
-        if username == "performance_glitch_user":
-            time.sleep(5)  # 可以先用简单等待，后续可优化为显式等待
             
         with allure.step("验证登录结果"):
             if expected_status == "success":
-                # 先尝试正常登录（因为本地可以，但 CI 可能失败）
-                login_page.login(username, password)
-                time.sleep(3)  # 等待页面响应
-                if not login_page.wait_for_inventory_page(timeout=5):
-                    # 如果失败，使用 JS 强制登录
-                    self.logger.warning(f"正常登录失败，尝试 JS 登录: {username}")
-                    login_page.login_by_js(username, password)
-                # 等待商品列表页出现
+                # # 先尝试正常登录（因为本地可以，但 CI 可能失败）
+                # login_page.login(username, password)
+                # time.sleep(3)  # 等待页面响应
+                # if not login_page.wait_for_inventory_page(timeout=5):
+                #     # 如果失败，使用 JS 强制登录
+                #     self.logger.warning(f"正常登录失败，尝试 JS 登录: {username}")
+                #     login_page.login_by_js(username, password)
+                # # 等待商品列表页出现
                 assert login_page.wait_for_inventory_page(timeout=20) is True, \
                     f"登录后未进入商品列表页，当前 URL: {login_page.driver.current_url}"
             elif expected_status == "locked":

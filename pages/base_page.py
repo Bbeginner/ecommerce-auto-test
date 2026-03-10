@@ -26,63 +26,70 @@ class BasePage:
         self.logger.debug(f"点击元素: {locator}")
 
     def input_text(self, locator, text, timeout=10):
-        """
-        输入文本：优先使用模拟用户输入（clear + send_keys），
-        如果验证失败则降级为 JavaScript 强制设置。
-        每次操作后都会验证输入是否成功。
-        """
         element = self.find_element(locator, timeout)
-        
-        # 1. 先点击激活元素（解决 CI 中元素未完全聚焦的问题）
-        element.click()
-        
-        # 2. 清空输入框
         element.clear()
-        
-        # 3. 逐字符输入（比一次性输入更稳定）
-        for char in text:
-            element.send_keys(char)
-        
-        # 短暂等待，让浏览器更新 DOM
-        time.sleep(0.1)
+        element.send_keys(text)
+        self.logger.debug(f"向 {locator} 输入: {text}")
 
-        # 4. 关键步骤：验证输入是否成功
-        actual_value = element.get_attribute('value')
-        if actual_value == text:
-            self.logger.debug(f"模拟输入成功: {text}")
-            return
 
-        # ---- 第二阶段：模拟输入失败，降级为 JS 强制输入 ----
-        self.logger.warning(f"模拟输入失败 (期望:'{text}', 实际:'{actual_value}')，降级为 JS 强制输入")
+    # def input_text(self, locator, text, timeout=10):
+    #     """
+    #     输入文本：优先使用模拟用户输入（clear + send_keys），
+    #     如果验证失败则降级为 JavaScript 强制设置。
+    #     每次操作后都会验证输入是否成功。
+    #     """
+    #     element = self.find_element(locator, timeout)
         
-        # 使用 JavaScript 设置值并触发所有相关事件，以欺骗前端框架
-        self.driver.execute_script("""
-            var element = arguments[0];
-            var value = arguments[1];
+    #     # 1. 先点击激活元素（解决 CI 中元素未完全聚焦的问题）
+    #     element.click()
+        
+    #     # 2. 清空输入框
+    #     element.clear()
+        
+    #     # 3. 逐字符输入（比一次性输入更稳定）
+    #     for char in text:
+    #         element.send_keys(char)
+        
+    #     # 短暂等待，让浏览器更新 DOM
+    #     time.sleep(0.1)
+
+    #     # 4. 关键步骤：验证输入是否成功
+    #     actual_value = element.get_attribute('value')
+    #     if actual_value == text:
+    #         self.logger.debug(f"模拟输入成功: {text}")
+    #         return
+
+    #     # ---- 第二阶段：模拟输入失败，降级为 JS 强制输入 ----
+    #     self.logger.warning(f"模拟输入失败 (期望:'{text}', 实际:'{actual_value}')，降级为 JS 强制输入")
+        
+    #     # 使用 JavaScript 设置值并触发所有相关事件，以欺骗前端框架
+    #     self.driver.execute_script("""
+    #         var element = arguments[0];
+    #         var value = arguments[1];
             
-            // 聚焦元素
-            element.focus();
+    #         // 聚焦元素
+    #         element.focus();
             
-            // 设置值
-            element.value = value;
+    #         // 设置值
+    #         element.value = value;
             
-            // 触发各种事件，模拟真实用户输入
-            element.dispatchEvent(new Event('keydown', {bubbles: true}));
-            element.dispatchEvent(new Event('keypress', {bubbles: true}));
-            element.dispatchEvent(new Event('input', {bubbles: true}));
-            element.dispatchEvent(new Event('keyup', {bubbles: true}));
-            element.dispatchEvent(new Event('change', {bubbles: true}));
-            element.dispatchEvent(new Event('blur', {bubbles: true}));
-        """, element, text)
+    #         // 触发各种事件，模拟真实用户输入
+    #         element.dispatchEvent(new Event('keydown', {bubbles: true}));
+    #         element.dispatchEvent(new Event('keypress', {bubbles: true}));
+    #         element.dispatchEvent(new Event('input', {bubbles: true}));
+    #         element.dispatchEvent(new Event('keyup', {bubbles: true}));
+    #         element.dispatchEvent(new Event('change', {bubbles: true}));
+    #         element.dispatchEvent(new Event('blur', {bubbles: true}));
+    #     """, element, text)
         
-        time.sleep(0.1)
+    #     time.sleep(0.1)
         
-        # 再次验证
-        final_value = element.get_attribute('value')
-        if final_value != text:
-            raise Exception(f"JS 强制输入失败，元素 {locator} 无法设置文本 '{text}'，当前值为 '{final_value}'")
+    #     # 再次验证
+    #     final_value = element.get_attribute('value')
+    #     if final_value != text:
+    #         raise Exception(f"JS 强制输入失败，元素 {locator} 无法设置文本 '{text}'，当前值为 '{final_value}'")
         
-        self.logger.debug(f"JS 强制输入成功: {text}")  
+    #     self.logger.debug(f"JS 强制输入成功: {text}")  
 
     def get_text(self, locator, timeout=10):
         element = self.find_element(locator, timeout)
