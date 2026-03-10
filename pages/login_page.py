@@ -43,6 +43,22 @@ class LoginPage(BasePage):
             self.input_text(self._password_input, password)
             self.click(self._login_button)
             time.sleep(2)
+        
+         # 如果仍然无变化，尝试用 JS 点击登录按钮
+        if "inventory.html" not in self.driver.current_url and not self.is_element_visible(self._error_message, timeout=2):
+            self.logger.warning("常规点击无效，尝试 JS 点击登录按钮")
+            btn = self.find_element(self._login_button)
+            self.driver.execute_script("arguments[0].click();", btn)
+            time.sleep(2)
+        
+        # 终极兜底：如果仍然没反应，直接提交表单
+        if "inventory.html" not in self.driver.current_url and not self.is_element_visible(self._error_message, timeout=2):
+            self.logger.warning("JS点击无效，尝试直接提交表单")
+            self.driver.execute_script("""
+                var form = document.querySelector('form');
+                if (form) form.submit();
+            """)
+            time.sleep(2)
 
     def get_error_message(self, timeout=10):
         """获取错误消息，带显式等待"""

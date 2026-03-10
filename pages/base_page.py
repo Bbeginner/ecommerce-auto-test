@@ -52,18 +52,37 @@ class BasePage:
             self.logger.debug(f"模拟输入成功: {text}")
             return
 
-        # 模拟输入失败，记录警告并降级为 JavaScript 强制输入
+        # ---- 第二阶段：模拟输入失败，降级为 JS 强制输入 ----
         self.logger.warning(f"模拟输入失败 (期望:'{text}', 实际:'{actual_value}')，降级为 JS 强制输入")
-        self.driver.execute_script("arguments[0].value = arguments[1];", element, text)
-        # 触发 input/change 事件，确保前端框架能捕获
-        self.driver.execute_script("arguments[0].dispatchEvent(new Event('input', {bubbles: true}));", element)
-        self.driver.execute_script("arguments[0].dispatchEvent(new Event('change', {bubbles: true}));", element)
+        
+        # 使用 JavaScript 设置值并触发所有相关事件，以欺骗前端框架
+        self.driver.execute_script("""
+            var element = arguments[0];
+            var value = arguments[1];
+            
+            // 聚焦元素
+            element.focus();
+            
+            // 设置值
+            element.value = value;
+            
+            // 触发各种事件，模拟真实用户输入
+            element.dispatchEvent(new Event('keydown', {bubbles: true}));
+            element.dispatchEvent(new Event('keypress', {bubbles: true}));
+            element.dispatchEvent(new Event('input', {bubbles: true}));
+            element.dispatchEvent(new Event('keyup', {bubbles: true}));
+            element.dispatchEvent(new Event('change', {bubbles: true}));
+            element.dispatchEvent(new Event('blur', {bubbles: true}));
+        """, element, text)
+        
         time.sleep(0.1)
+        
         # 再次验证
         final_value = element.get_attribute('value')
         if final_value != text:
             raise Exception(f"JS 强制输入失败，元素 {locator} 无法设置文本 '{text}'，当前值为 '{final_value}'")
-        self.logger.debug(f"JS 强制输入成功: {text}")     
+        
+        self.logger.debug(f"JS 强制输入成功: {text}")  
 
     def get_text(self, locator, timeout=10):
         element = self.find_element(locator, timeout)
