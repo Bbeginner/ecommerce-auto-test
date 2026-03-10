@@ -1,0 +1,31 @@
+INFO     AutoTest:login_page.py:17 打开登录页面
+INFO     AutoTest:login_page.py:17 打开登录页面
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'user-name')
+WARNING  AutoTest:base_page.py:56 模拟输入失败 (期望:'performance_glitch_user', 实际:'')，降级为 JS 强制输入
+DEBUG    AutoTest:base_page.py:85 JS 强制输入成功: performance_glitch_user
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'password')
+WARNING  AutoTest:base_page.py:56 模拟输入失败 (期望:'secret_sauce', 实际:'')，降级为 JS 强制输入
+DEBUG    AutoTest:base_page.py:85 JS 强制输入成功: secret_sauce
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'login-button')
+DEBUG    AutoTest:base_page.py:26 点击元素: ('id', 'login-button')
+INFO     AutoTest:login_page.py:28 尝试登录: performance_glitch_user
+WARNING  AutoTest:login_page.py:38 登录后页面无变化，尝试刷新并重试一次
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'user-name')
+WARNING  AutoTest:base_page.py:56 模拟输入失败 (期望:'performance_glitch_user', 实际:'')，降级为 JS 强制输入
+DEBUG    AutoTest:base_page.py:85 JS 强制输入成功: performance_glitch_user
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'password')
+WARNING  AutoTest:base_page.py:56 模拟输入失败 (期望:'secret_sauce', 实际:'')，降级为 JS 强制输入
+DEBUG    AutoTest:base_page.py:85 JS 强制输入成功: secret_sauce
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'login-button')
+DEBUG    AutoTest:base_page.py:26 点击元素: ('id', 'login-button')
+WARNING  AutoTest:login_page.py:49 常规点击无效，尝试 JS 点击登录按钮
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'login-button')
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'user-name')
+WARNING  AutoTest:base_page.py:56 模拟输入失败 (期望:'performance_glitch_user', 实际:'')，降级为 JS 强制输入
+DEBUG    AutoTest:base_page.py:85 JS 强制输入成功: performance_glitch_user
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'password')
+WARNING  AutoTest:base_page.py:56 模拟输入失败 (期望:'secret_sauce', 实际:'')，降级为 JS 强制输入
+DEBUG    AutoTest:base_page.py:85 JS 强制输入成功: secret_sauce
+DEBUG    AutoTest:base_page.py:17 找到元素: ('id', 'login-button')
+DEBUG    AutoTest:base_page.py:26 点击元素: ('id', 'login-button')
+INFO     AutoTest:login_page.py:28 尝试登录: performance_glitch_user
