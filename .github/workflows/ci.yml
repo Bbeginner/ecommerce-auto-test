@@ -34,13 +34,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Cache webdriver-manager
-        uses: actions/cache@v4
-        with:
-          path: ~/.wdm
-          key: ${{ runner.os }}-wdm-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-wdm-
+      # - name: Cache webdriver-manager
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.wdm
+      #     key: ${{ runner.os }}-wdm-${{ hashFiles('requirements.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-wdm-
 
       # 不再需要 apt 安装 chromium，因为 webdriver-manager 会下载匹配的驱动
       # 但需要确保系统有 Chrome 浏览器本身
@@ -48,6 +48,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
+          google-chrome --version   # 打印 Chrome 版本
 
       - name: Override browser to chrome in config.yaml
         run: |
