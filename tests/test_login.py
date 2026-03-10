@@ -25,51 +25,66 @@ class TestLogin:
         ("standard_user", "", "empty_password"),
         ("locked_out_user", "secret_sauce", "locked"),
         ("fake_user", "wrong_pwd", "invalid"),
-        pytest.param("performance_glitch_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
+        # pytest.param("performance_glitch_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
         ("problem_user", "secret_sauce", "success"),
         #  pytest.param("problem_user", "secret_sauce", "success", marks=pytest.mark.skip(reason="CI环境偶发不稳定，本地通过")),
         ("standard_user", "secret_sauce", "success"),  # 故意传参错误的用例放最后
+        ("performance_glitch_user", "secret_sauce", "success"),  # 这个用户在 CI 中偶尔登录失败，但本地稳定通过，先保留观察
     ])
     def test_login_scenarios(self, username, password, expected_status):
-        with allure.step("打开登录页面"):
-            login_page = LoginPage(self.driver)
-            # login_page.open()
-        with allure.step(f"输入用户名：{username}，密码：{password}"):
-            login_page.login(username, password)
-            
-            # # 先尝试正常登录（因为本地可以，但 CI 可能失败）
-                # login_page.login(username, password)
-                # time.sleep(3)  # 等待页面响应
-                # if not login_page.wait_for_inventory_page(timeout=5):
-                #     # 如果失败，使用 JS 强制登录
-                #     self.logger.warning(f"正常登录失败，尝试 JS 登录: {username}")
-                #     login_page.login_by_js(username, password)
-                # # 等待商品列表页出现
-        with allure.step("验证登录结果"):
-            if expected_status == "success":
-                assert login_page.wait_for_inventory_page(timeout=20) is True, \
-                    f"登录后未进入商品列表页，当前 URL: {login_page.driver.current_url}"
-            elif expected_status == "locked":
-                assert login_page.is_login_success() is False
-                error = login_page.get_error_message(timeout=10)
-                assert error is not None, "锁定用户应显示错误消息"
-                assert "locked out" in error.lower()
-            elif expected_status == "empty_username":
-                assert login_page.is_login_success() is False
-                error = login_page.get_error_message(timeout=10)
-                assert error is not None, "空用户名应显示错误消息"
-                assert "username is required" in error.lower()
-            elif expected_status == "empty_password":
-                assert login_page.is_login_success() is False
-                error = login_page.get_error_message(timeout=10)
-                assert error is not None, "空密码应显示错误消息"
-                assert "password is required" in error.lower()
-            else:  # invalid
-                assert login_page.is_login_success() is False
-                error = login_page.get_error_message(timeout=10)
-                assert error is not None, "无效凭证应显示错误消息"
-                assert "do not match" in error.lower() or "username and password do not match" in error.lower()
-
+        try:
+            with allure.step("打开登录页面"):
+                login_page = LoginPage(self.driver)
+                # login_page.open()
+            with allure.step(f"输入用户名：{username}，密码：{password}"):
+                login_page.login(username, password)
+                
+                # # 先尝试正常登录（因为本地可以，但 CI 可能失败）
+                    # login_page.login(username, password)
+                    # time.sleep(3)  # 等待页面响应
+                    # if not login_page.wait_for_inventory_page(timeout=5):
+                    #     # 如果失败，使用 JS 强制登录
+                    #     self.logger.warning(f"正常登录失败，尝试 JS 登录: {username}")
+                    #     login_page.login_by_js(username, password)
+                    # # 等待商品列表页出现
+            with allure.step("验证登录结果"):
+                if expected_status == "success":
+                    assert login_page.wait_for_inventory_page(timeout=20) is True, \
+                        f"登录后未进入商品列表页，当前 URL: {login_page.driver.current_url}"
+                elif expected_status == "locked":
+                    assert login_page.is_login_success() is False
+                    error = login_page.get_error_message(timeout=10)
+                    assert error is not None, "锁定用户应显示错误消息"
+                    assert "locked out" in error.lower()
+                elif expected_status == "empty_username":
+                    assert login_page.is_login_success() is False
+                    error = login_page.get_error_message(timeout=10)
+                    assert error is not None, "空用户名应显示错误消息"
+                    assert "username is required" in error.lower()
+                elif expected_status == "empty_password":
+                    assert login_page.is_login_success() is False
+                    error = login_page.get_error_message(timeout=10)
+                    assert error is not None, "空密码应显示错误消息"
+                    assert "password is required" in error.lower()
+                else:  # invalid
+                    assert login_page.is_login_success() is False
+                    error = login_page.get_error_message(timeout=10)
+                    assert error is not None, "无效凭证应显示错误消息"
+                    assert "do not match" in error.lower() or "username and password do not match" in error.lower()
+        finally:
+            # 针对 performance_glitch_user 强制清理浏览器状态
+            if username == "performance_glitch_user":
+                self.driver.delete_all_cookies()
+                self.driver.execute_script("window.localStorage.clear();")
+                self.driver.execute_script("window.sessionStorage.clear();")
+                self.driver.get("https://www.saucedemo.com")
+                from selenium.webdriver.support.ui import WebDriverWait
+                from selenium.webdriver.support import expected_conditions as EC
+                from selenium.webdriver.common.by import By
+                WebDriverWait(self.driver, 10).until(
+                    EC.visibility_of_element_located((By.ID, "user-name"))
+                )
+                
     # 独立测试方法也做同样修改，但因为我们已经在参数化中覆盖，可以保留或删除。为简洁，可删除独立方法，但为了保险保留并修改
     @allure.story("空用户名")
     def test_empty_username(self):
