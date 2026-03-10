@@ -7,6 +7,7 @@ class TestLogin:
     def setup_method(self):
         """每个测试方法执行前运行，清理浏览器状态"""
         self.driver.delete_all_cookies()
+        self.driver.get("https://www.saucedemo.com")  # 强制跳转回登录页
         self.driver.refresh()
         import time
         time.sleep(1)

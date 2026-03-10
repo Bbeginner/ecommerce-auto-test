@@ -92,7 +92,7 @@ jobs:
 
       - name: Run tests (headless mode)
         run: |
-          pytest tests/test_login.py -v --alluredir=./allure-results
+          pytest tests/test_login.py -v -s --alluredir=./allure-results
 
       - name: List files after test
         if: always()

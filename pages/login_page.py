@@ -17,6 +17,12 @@ class LoginPage(BasePage):
         self.input_text(self._password_input, password)
         self.click(self._login_button)
         self.logger.info(f"尝试登录: {username}")
+        # 新增调试输出
+        current_url = self.driver.current_url
+        print(f"[DEBUG] 登录后 URL: {current_url}")
+        error = self.get_error_message()
+        if error:
+            print(f"[DEBUG] 错误信息: {error}")
 
     def get_error_message(self):
         if self.is_element_visible(self._error_message, timeout=3):
