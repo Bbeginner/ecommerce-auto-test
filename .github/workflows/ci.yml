@@ -97,6 +97,22 @@ jobs:
       - name: List files after test
         if: always()
         run: ls -la
+
+      - name: Print chromedriver.log (last 100 lines)
+        if: always()
+        run: |
+          if [ -f chromedriver.log ]; then
+            tail -n 100 chromedriver.log
+          else
+            echo "chromedriver.log not found"
+          fi
+
+      - name: Upload chromedriver log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chromedriver-log
+          path: ./chromedriver.log
         
       - name: Upload Allure results as artifact
         uses: actions/upload-artifact@v4
