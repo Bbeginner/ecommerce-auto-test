@@ -70,6 +70,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
           google-chrome --version
+      - name: Confirm Google Chrome install
+        run: |
+          if ! google-chrome --version; then
+            echo "Google Chrome failed to install"
+            exit 1
+          fi
 
       - name: Install ChromeDriver
         run: |
@@ -81,7 +87,7 @@ jobs:
           sudo chmod +x /usr/local/bin/chromedriver
           chromedriver --version
           echo "CHROMEDRIVER_PATH=/usr/local/bin/chromedriver" >> $GITHUB_ENV
-          
+
       - name: Override browser to chrome in config.yaml
         run: |
           sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
