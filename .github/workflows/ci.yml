@@ -50,6 +50,10 @@ jobs:
           sudo apt-get install -y google-chrome-stable
           google-chrome --version   # 打印 Chrome 版本
 
+      - name: Test Chrome headless launch
+        run: |
+          google-chrome --headless --no-sandbox --disable-dev-shm-usage --dump-dom https://example.com || echo "Chrome launch failed, but continuing..."
+          
       - name: Override browser to chrome in config.yaml
         run: |
           sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
