@@ -49,11 +49,19 @@ class DriverFactory:
             options = webdriver.EdgeOptions()
             if headless:
                 options.add_argument('--headless')
-            try:
-                service = EdgeService(EdgeChromiumDriverManager().install())
+            # 优先使用本地驱动
+            local_driver_path = os.path.join(os.path.dirname(__file__), '..', 'drivers', 'msedgedriver.exe')
+            if os.path.exists(local_driver_path):
+                service = EdgeService(executable_path=local_driver_path)
                 driver = webdriver.Edge(service=service, options=options)
-            except Exception as e:
-                raise Exception(f"Failed to initialize Edge driver: {e}")
+                print(f"使用本地 Edge 驱动: {local_driver_path}")
+            else:
+                # 本地驱动不存在，尝试自动下载
+                try:
+                    service = EdgeService(EdgeChromiumDriverManager().install())
+                    driver = webdriver.Edge(service=service, options=options)
+                except Exception as e:
+                    raise Exception(f"无法自动下载 Edge 驱动，请检查网络或手动放置驱动到 drivers/ 目录。原始错误: {e}")
 
         # ---------- 不支持的浏览器 ----------
         else:
