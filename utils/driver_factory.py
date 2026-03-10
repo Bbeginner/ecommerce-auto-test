@@ -31,11 +31,18 @@ class DriverFactory:
                 options.add_argument('--disable-dev-shm-usage') # 关键：解决共享内存不足
                 options.add_argument('--disable-gpu')          # 可选，某些环境需要
                 options.add_argument('--remote-debugging-port=9222')  # 可选
-            try:
-                service = ChromeService(ChromeDriverManager().install())
+            # 优先使用环境变量指定的 chromedriver 路径（CI 中设置）
+            chromedriver_path = os.environ.get('CHROMEDRIVER_PATH')
+            if chromedriver_path and os.path.exists(chromedriver_path):
+                service = ChromeService(executable_path=chromedriver_path)
                 driver = webdriver.Chrome(service=service, options=options)
-            except Exception as e:
-                raise Exception(f"Failed to initialize Chrome driver: {e}")
+            else:
+                # 回退到 webdriver-manager 自动下载
+                try:
+                    service = ChromeService(ChromeDriverManager().install())
+                    driver = webdriver.Chrome(service=service, options=options)
+                except Exception as e:
+                    raise Exception(f"Failed to initialize Chrome driver: {e}")
 
         # ---------- Firefox ----------
         elif browser == 'firefox':

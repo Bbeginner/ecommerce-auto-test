@@ -44,16 +44,25 @@ jobs:
 
       # 不再需要 apt 安装 chromium，因为 webdriver-manager 会下载匹配的驱动
       # 但需要确保系统有 Chrome 浏览器本身
-      - name: Install Chrome browser
+      # - name: Install Chrome browser
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y google-chrome-stable
+      #     google-chrome --version   # 打印 Chrome 版本
+
+      # - name: Test Chrome headless launch
+      #   run: |
+      #     google-chrome --headless --no-sandbox --disable-dev-shm-usage --dump-dom https://example.com || echo "Chrome launch failed, but continuing..."
+          
+      # 安装 Chromium 和 chromedriver（系统包）
+      - name: Install Chromium and chromedriver
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          google-chrome --version   # 打印 Chrome 版本
+          sudo apt-get install -y chromium-browser chromium-chromedriver
+          chromium-browser --version
+          chromedriver --version
+          echo "CHROMEDRIVER_PATH=/usr/lib/chromium-browser/chromedriver" >> $GITHUB_ENV
 
-      - name: Test Chrome headless launch
-        run: |
-          google-chrome --headless --no-sandbox --disable-dev-shm-usage --dump-dom https://example.com || echo "Chrome launch failed, but continuing..."
-          
       - name: Override browser to chrome in config.yaml
         run: |
           sed -i 's/^browser:.*/browser: "chrome"/' config/config.yaml
