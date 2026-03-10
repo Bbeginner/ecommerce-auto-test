@@ -33,13 +33,21 @@ class DriverFactory:
                 options.add_argument('--remote-debugging-port=9222')  # 可选
             # 优先使用环境变量指定的 chromedriver 路径（CI 中设置）
             chromedriver_path = os.environ.get('CHROMEDRIVER_PATH')
+            # 公共日志路径
+            log_path = "./chromedriver.log"
+
             if chromedriver_path and os.path.exists(chromedriver_path):
-                service = ChromeService(executable_path=chromedriver_path)
+                service = ChromeService(
+                    executable_path=chromedriver_path,
+                    service_args=['--verbose', f'--log-path={log_path}']
+                )
                 driver = webdriver.Chrome(service=service, options=options)
             else:
-                # 回退到 webdriver-manager 自动下载
                 try:
-                    service = ChromeService(ChromeDriverManager().install())
+                    service = ChromeService(
+                        ChromeDriverManager().install(),
+                        service_args=['--verbose', f'--log-path={log_path}']
+                    )
                     driver = webdriver.Chrome(service=service, options=options)
                 except Exception as e:
                     raise Exception(f"Failed to initialize Chrome driver: {e}")
